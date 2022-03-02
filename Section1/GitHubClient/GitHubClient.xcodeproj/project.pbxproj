@@ -13,6 +13,7 @@
 		DA4FCB9427CFB16200A94AE3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA4FCB9327CFB16200A94AE3 /* Preview Assets.xcassets */; };
 		DA4FCB9B27CFB5F800A94AE3 /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCB9A27CFB5F800A94AE3 /* Repo.swift */; };
 		DA4FCB9D27CFB5FC00A94AE3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCB9C27CFB5FC00A94AE3 /* User.swift */; };
+		DA4FCBA327CFB79000A94AE3 /* RepoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCBA227CFB79000A94AE3 /* RepoRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		DA4FCB9327CFB16200A94AE3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DA4FCB9A27CFB5F800A94AE3 /* Repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
 		DA4FCB9C27CFB5FC00A94AE3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DA4FCBA227CFB79000A94AE3 /* RepoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 		DA4FCB8B27CFB16200A94AE3 /* GitHubClient */ = {
 			isa = PBXGroup;
 			children = (
+				DA4FCB9F27CFB76900A94AE3 /* Views */,
 				DA4FCB8C27CFB16200A94AE3 /* GitHubClientApp.swift */,
 				DA4FCB8E27CFB16200A94AE3 /* ContentView.swift */,
 				DA4FCB9E27CFB60000A94AE3 /* Models */,
@@ -79,6 +82,14 @@
 				DA4FCB9C27CFB5FC00A94AE3 /* User.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		DA4FCB9F27CFB76900A94AE3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DA4FCBA227CFB79000A94AE3 /* RepoRow.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA4FCBA327CFB79000A94AE3 /* RepoRow.swift in Sources */,
 				DA4FCB9D27CFB5FC00A94AE3 /* User.swift in Sources */,
 				DA4FCB9B27CFB5F800A94AE3 /* Repo.swift in Sources */,
 				DA4FCB8F27CFB16200A94AE3 /* ContentView.swift in Sources */,
