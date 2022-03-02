@@ -9,33 +9,36 @@ import SwiftUI
 
 struct RepoDetailView: View {
     let repo: Repo
-        
+    
     var body: some View {
         
-        HStack {
-            VStack(alignment: .leading) {
-                HStack {
-                    Image("GitHubMark")
-                        .resizable()
-                        .frame(width: 16, height: 16)
-                    Text(repo.owner.name)
-                        .font(.caption)
-                }
-                
-                Text(repo.name)
-                    .font(.body)
-                    .fontWeight(.bold)
-                
-                Text(repo.description)
+        ScrollView {
+            HStack {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Image("GitHubMark")
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                        Text(repo.owner.name)
+                            .font(.caption)
+                    }
                     
-                HStack {
-                    Image(systemName: "star")
-                    Text("\(repo.stargazersCount) stars")
+                    Text(repo.name)
+                        .font(.body)
+                        .fontWeight(.bold)
+                    
+                    Text(repo.description)
+                    
+                    HStack {
+                        Image(systemName: "star")
+                        Text("\(repo.stargazersCount) stars")
+                    }
+                    Spacer()
                 }
                 Spacer()
-            }
-            Spacer()
+            }            
         }
+        .navigationBarTitleDisplayMode(.inline)
         
     }
 }

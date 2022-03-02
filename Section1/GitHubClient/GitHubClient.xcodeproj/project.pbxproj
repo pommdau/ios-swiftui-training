@@ -94,8 +94,8 @@
 			isa = PBXGroup;
 			children = (
 				DA4FCB8E27CFB16200A94AE3 /* RepoListView.swift */,
-				DA4FCBA427CFB98300A94AE3 /* RepoDetailView.swift */,
 				DA4FCBA227CFB79000A94AE3 /* RepoRow.swift */,
+				DA4FCBA427CFB98300A94AE3 /* RepoDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
