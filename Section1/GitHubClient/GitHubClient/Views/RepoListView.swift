@@ -19,36 +19,36 @@ struct RepoListView: View {
     var body: some View {
         NavigationView {
             Group {
-            if reposLoader.error != nil {
-                // Error View
-                VStack {
-                    Group {
-                        Image("GitHubMark")
-                        Text("Failed to load repositories")
-                            .padding(.top, 4)
-                    }
-                    .foregroundColor(.black)
-                    .opacity(0.4)
-                    
-                    Button(
-                        action: {
-                            reposLoader.call()
-                        }, label: {
-                            Text("Retry")
-                                .fontWeight(.bold)
-                        }
-                    )
-                        .padding(.top, 8)
-                }
-            } else {
-                if reposLoader.isLoading {
+                switch reposLoader.repos {
+                case .idle, .loading:
                     ProgressView("loading...")
-                } else {
-                    if reposLoader.repos.isEmpty {
+                case .failed:
+                    // Error View
+                    VStack {
+                        Group {
+                            Image("GitHubMark")
+                            Text("Failed to load repositories")
+                                .padding(.top, 4)
+                        }
+                        .foregroundColor(.black)
+                        .opacity(0.4)
+                        
+                        Button(
+                            action: {
+                                reposLoader.call()
+                            }, label: {
+                                Text("Retry")
+                                    .fontWeight(.bold)
+                            }
+                        )
+                            .padding(.top, 8)
+                    }
+                case let .loaded(repos):
+                    if repos.isEmpty {
                         Text("No repositories")
                             .fontWeight(.bold)
                     } else {
-                        List(reposLoader.repos) { repo in
+                        List(repos) { repo in
                             NavigationLink(
                                 destination: RepoDetailView(repo: repo)) {
                                     RepoRow(repo: repo)
@@ -56,7 +56,6 @@ struct RepoListView: View {
                         }
                     }
                 }
-            }
             }
             .navigationTitle("Repositories")
         }
@@ -70,10 +69,7 @@ struct RepoListView: View {
 // MARK: - ReposLoader
 
 class ReposLoader: ObservableObject {
-    
-    @Published private(set) var repos = [Repo]()
-    @Published private(set) var error: Error? = nil
-    @Published private(set) var isLoading: Bool = false
+    @Published private(set) var repos: Stateful<[Repo]> = .idle
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -89,20 +85,23 @@ class ReposLoader: ObservableObject {
         let reposPublisher = URLSession.shared
             .dataTaskPublisher(for: urlRequest)
             .tryMap() { element -> Data in
-                //                guard
-                //                    let httpResponse = element.response as? HTTPURLResponse,
-                //                    httpResponse.statusCode == 200 else {
-                //                        throw URLError(.badServerResponse)
-                //                    }
-                //                return element.data
-                throw URLError(.badServerResponse)
+                // DEBUGGING for connection error
+//                Thread.sleep(forTimeInterval: 1)
+//                throw URLError(.badServerResponse)
+                
+                guard
+                    let httpResponse = element.response as? HTTPURLResponse,
+                    httpResponse.statusCode == 200 else {
+                        throw URLError(.badServerResponse)
+                    }
+                return element.data
             }
             .decode(type: [Repo].self, decoder: JSONDecoder())
         
         reposPublisher
             .receive(on: DispatchQueue.main)
             .handleEvents(receiveSubscription: { [weak self] _ in
-                self?.isLoading = true
+                self?.repos = .loading
             })
             .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
@@ -110,11 +109,10 @@ class ReposLoader: ObservableObject {
                     print("finished")
                 case .failure(let error):
                     print("Error: \(error)")
-                    self?.error = error
+                    self?.repos = .failed(error)
                 }
-                self?.isLoading = false
             }, receiveValue: { [weak self] repos in
-                self?.repos = repos
+                self?.repos = .loaded(repos)
             }
             ).store(in: &cancellables)
     }
