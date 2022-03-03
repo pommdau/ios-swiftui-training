@@ -18,17 +18,47 @@ struct RepoListView: View {
     
     var body: some View {
         NavigationView {
-            if reposLoader.repos.isEmpty {
-                ProgressView("loading...")
-            } else {
-                List(reposLoader.repos) { repo in
-                    NavigationLink(
-                        destination: RepoDetailView(repo: repo)) {
-                            RepoRow(repo: repo)
+            Group {
+            if reposLoader.error != nil {
+                // Error View
+                VStack {
+                    Group {
+                        Image("GitHubMark")
+                        Text("Failed to load repositories")
+                            .padding(.top, 4)
+                    }
+                    .foregroundColor(.black)
+                    .opacity(0.4)
+                    
+                    Button(
+                        action: {
+                            reposLoader.call()
+                        }, label: {
+                            Text("Retry")
+                                .fontWeight(.bold)
                         }
+                    )
+                        .padding(.top, 8)
                 }
-                .navigationTitle("Repositories")
+            } else {
+                if reposLoader.isLoading {
+                    ProgressView("loading...")
+                } else {
+                    if reposLoader.repos.isEmpty {
+                        Text("No repositories")
+                            .fontWeight(.bold)
+                    } else {
+                        List(reposLoader.repos) { repo in
+                            NavigationLink(
+                                destination: RepoDetailView(repo: repo)) {
+                                    RepoRow(repo: repo)
+                                }
+                        }
+                    }
+                }
             }
+            }
+            .navigationTitle("Repositories")
         }
         .onAppear {
             reposLoader.call()
@@ -42,6 +72,8 @@ struct RepoListView: View {
 class ReposLoader: ObservableObject {
     
     @Published private(set) var repos = [Repo]()
+    @Published private(set) var error: Error? = nil
+    @Published private(set) var isLoading: Bool = false
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -57,19 +89,30 @@ class ReposLoader: ObservableObject {
         let reposPublisher = URLSession.shared
             .dataTaskPublisher(for: urlRequest)
             .tryMap() { element -> Data in
-                guard
-                    let httpResponse = element.response as? HTTPURLResponse,
-                    httpResponse.statusCode == 200 else {
-                        throw URLError(.badServerResponse)
-                    }
-                return element.data
+                //                guard
+                //                    let httpResponse = element.response as? HTTPURLResponse,
+                //                    httpResponse.statusCode == 200 else {
+                //                        throw URLError(.badServerResponse)
+                //                    }
+                //                return element.data
+                throw URLError(.badServerResponse)
             }
             .decode(type: [Repo].self, decoder: JSONDecoder())
-                
+        
         reposPublisher
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                print("Finished: \(completion)")
+            .handleEvents(receiveSubscription: { [weak self] _ in
+                self?.isLoading = true
+            })
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished:
+                    print("finished")
+                case .failure(let error):
+                    print("Error: \(error)")
+                    self?.error = error
+                }
+                self?.isLoading = false
             }, receiveValue: { [weak self] repos in
                 self?.repos = repos
             }
