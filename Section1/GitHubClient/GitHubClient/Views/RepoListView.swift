@@ -17,16 +17,20 @@ struct RepoListView: View {
     
     var body: some View {
         NavigationView {
-            List(mockRepos) { repo in
-                NavigationLink(
-                    destination: RepoDetailView(repo: repo)) {
-                        RepoRow(repo: repo)
-                    }
+            if mockRepos.isEmpty {
+                ProgressView("loading...")
+            } else {
+                List(mockRepos) { repo in
+                    NavigationLink(
+                        destination: RepoDetailView(repo: repo)) {
+                            RepoRow(repo: repo)
+                        }
+                }
+                .navigationTitle("Repositories")
             }
-            .navigationTitle("Repositories")
-            .onAppear {
-                loadRepos()
-            }
+        }
+        .onAppear {
+            loadRepos()
         }
     }
     
