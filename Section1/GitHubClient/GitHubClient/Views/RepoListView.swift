@@ -6,21 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
 struct RepoListView: View {
     
     // MARK: - Properties
     
-    @State private var mockRepos: [Repo] = []
+    @StateObject private var reposLoader = ReposLoader()
     
     // MARK: - Views
     
     var body: some View {
         NavigationView {
-            if mockRepos.isEmpty {
+            if reposLoader.repos.isEmpty {
                 ProgressView("loading...")
             } else {
-                List(mockRepos) { repo in
+                List(reposLoader.repos) { repo in
                     NavigationLink(
                         destination: RepoDetailView(repo: repo)) {
                             RepoRow(repo: repo)
@@ -30,22 +31,39 @@ struct RepoListView: View {
             }
         }
         .onAppear {
-            loadRepos()
+            reposLoader.call()
         }
     }
-    
-    // MARK: - Helpers
-    
-    private func loadRepos() {
-        // 1秒後にモックデータを読み込む
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            mockRepos = [
-                .mock1, .mock2, .mock3, .mock4, .mock5
-            ]
-        }
-    }
-    
+        
 }
+
+// MARK: - ReposLoader
+
+class ReposLoader: ObservableObject {
+    
+    @Published private(set) var repos = [Repo]()
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    func call() {
+        let reposPublisher = Future<[Repo], Error> { promise in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                promise(.success([
+                    .mock1, .mock2, .mock3, .mock4, .mock5
+                ]))
+            }
+        }
+        reposPublisher
+            .sink(receiveCompletion: { completion in
+                print("Finished: \(completion)")
+            }, receiveValue: { [weak self] repos in
+                self?.repos = repos
+            }
+            ).store(in: &cancellables)
+    }
+}
+
+// MARK: - Preview
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
