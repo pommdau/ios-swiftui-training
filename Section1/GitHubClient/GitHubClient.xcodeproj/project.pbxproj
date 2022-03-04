@@ -18,6 +18,9 @@
 		DA4FCBA727CFBC9100A94AE3 /* Repo+mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCBA627CFBC9100A94AE3 /* Repo+mock.swift */; };
 		DA4FCBA927CFBC9800A94AE3 /* User+mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCBA827CFBC9800A94AE3 /* User+mock.swift */; };
 		DA4FCBCE27D0F8CC00A94AE3 /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCBCD27D0F8CC00A94AE3 /* Stateful.swift */; };
+		DA4FCBD027D1D12400A94AE3 /* RepoAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCBCF27D1D12400A94AE3 /* RepoAPIClient.swift */; };
+		DA4FCBD227D1D14A00A94AE3 /* RepoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCBD127D1D14A00A94AE3 /* RepoRepository.swift */; };
+		DA4FCBD427D1D26700A94AE3 /* RepoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4FCBD327D1D26700A94AE3 /* RepoListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		DA4FCBA627CFBC9100A94AE3 /* Repo+mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repo+mock.swift"; sourceTree = "<group>"; };
 		DA4FCBA827CFBC9800A94AE3 /* User+mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+mock.swift"; sourceTree = "<group>"; };
 		DA4FCBCD27D0F8CC00A94AE3 /* Stateful.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stateful.swift; sourceTree = "<group>"; };
+		DA4FCBCF27D1D12400A94AE3 /* RepoAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoAPIClient.swift; sourceTree = "<group>"; };
+		DA4FCBD127D1D14A00A94AE3 /* RepoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoRepository.swift; sourceTree = "<group>"; };
+		DA4FCBD327D1D26700A94AE3 /* RepoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +71,11 @@
 		DA4FCB8B27CFB16200A94AE3 /* GitHubClient */ = {
 			isa = PBXGroup;
 			children = (
-				DA4FCBCC27D0F8C500A94AE3 /* Utils */,
 				DA4FCB8C27CFB16200A94AE3 /* GitHubClientApp.swift */,
+				DA4FCBCF27D1D12400A94AE3 /* RepoAPIClient.swift */,
+				DA4FCBD127D1D14A00A94AE3 /* RepoRepository.swift */,
+				DA4FCBD327D1D26700A94AE3 /* RepoListViewModel.swift */,
+				DA4FCBCC27D0F8C500A94AE3 /* Utils */,
 				DA4FCB9F27CFB76900A94AE3 /* Views */,
 				DA4FCB9E27CFB60000A94AE3 /* Models */,
 				DA4FCB9027CFB16200A94AE3 /* Assets.xcassets */,
@@ -195,10 +204,13 @@
 				DA4FCB9D27CFB5FC00A94AE3 /* User.swift in Sources */,
 				DA4FCB9B27CFB5F800A94AE3 /* Repo.swift in Sources */,
 				DA4FCBCE27D0F8CC00A94AE3 /* Stateful.swift in Sources */,
+				DA4FCBD227D1D14A00A94AE3 /* RepoRepository.swift in Sources */,
 				DA4FCBA527CFB98300A94AE3 /* RepoDetailView.swift in Sources */,
 				DA4FCB8F27CFB16200A94AE3 /* RepoListView.swift in Sources */,
+				DA4FCBD427D1D26700A94AE3 /* RepoListViewModel.swift in Sources */,
 				DA4FCBA927CFBC9800A94AE3 /* User+mock.swift in Sources */,
 				DA4FCB8D27CFB16200A94AE3 /* GitHubClientApp.swift in Sources */,
+				DA4FCBD027D1D12400A94AE3 /* RepoAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
