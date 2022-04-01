@@ -22,6 +22,7 @@ struct RepoAPIClient {
         return URLSession.shared
             .dataTaskPublisher(for: urlRequest)
             .tryMap() { element -> Data in
+                // element = (data: Data, response: URLResponse)
                 guard
                     let httpResponse = element.response as? HTTPURLResponse,
                     httpResponse.statusCode == 200 else {
